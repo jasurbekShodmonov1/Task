@@ -1,13 +1,14 @@
-FROM openjdk:17-jdk-alpine
 
-# Step 2: Set the working directory inside the container
+FROM openjdk:21-jdk-slim
+
+# Create and set working directory
 WORKDIR /app
 
-# Step 3: Copy the Spring Boot JAR file into the container
+# Copy the built JAR file into the container
+COPY build/libs/task-0.0.1-SNAPSHOT.jar app.jar
 
-
-# Step 4: Expose the port your application runs on
+# Expose port used by Spring Boot
 EXPOSE 8080
 
-# Step 5: Define the command to run your Spring Boot application
-CMD ["java", "-jar", "task.jar"]
+# Run the JAR
+ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -26,38 +26,38 @@ public class BalanceTransactionService {
     private final BalanceTransactionMapper balanceTransactionMapper;
 
 
-//    public List<BalanceTransaction> getAll() {
-//        List<BalanceTransaction> balanceTransactionsAllList = balanceTransactionRepository.findAll();
-//
-//        return balanceTransactionsAllList.stream().toList();
-//
-//    }
-//
-//    public BalanceTransaction getTransactionById(UUID id) {
-//        BalanceTransaction transaction = balanceTransactionRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("transaction not found"));
-//
-//        return transaction;
-//    }
-//
-//    public List<BalanceTransaction> getByUser(UUID id) {
-//        User user = userRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("user not found"));
-//
-//        List<BalanceTransaction> transactions = balanceTransactionRepository.findByUser(user);
-//        return transactions.stream().toList();
-//    }
-//    public List<BalanceTransaction> getByDate(LocalDate date){
-//        LocalDate today =LocalDate.now();
-//        if(date.isBefore(today)){
-//
-//            List<BalanceTransaction> transactions = balanceTransactionRepository.findByDate(date, today);
-//
-//            return transactions.stream().toList();
-//        } else{
-//            return Collections.emptyList();
-//        }
-//    }
+    public List<BalanceTransactionResponseDto> getAll() {
+        List<BalanceTransaction> balanceTransactionsAllList = balanceTransactionRepository.findAll();
+
+        return balanceTransactionsAllList.stream().map(balanceTransactionMapper::toDto).toList();
+
+    }
+
+    public BalanceTransactionResponseDto getTransactionById(UUID id) {
+        BalanceTransaction transaction = balanceTransactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("transaction not found"));
+
+        return balanceTransactionMapper.toDto(transaction);
+    }
+
+    public List<BalanceTransactionResponseDto> getByUser(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("user not found"));
+
+        List<BalanceTransaction> transactions = balanceTransactionRepository.findByUser(user);
+        return transactions.stream().map(balanceTransactionMapper::toDto).toList();
+    }
+    public List<BalanceTransactionResponseDto> getByDate(LocalDate date){
+        LocalDate today =LocalDate.now();
+        if(date.isBefore(today)){
+
+            List<BalanceTransaction> transactions = balanceTransactionRepository.findByTimestampBetween(date, today);
+
+            return transactions.stream().map(balanceTransactionMapper::toDto).toList();
+        } else{
+            return Collections.emptyList();
+        }
+    }
 
     public BalanceTransactionResponseDto createTransaction(BalanceTransactionRequestDto balanceTransactionRequestDto){
         User user = userRepository.findById(balanceTransactionRequestDto.userId())
