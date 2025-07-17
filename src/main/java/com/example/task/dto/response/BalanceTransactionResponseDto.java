@@ -1,14 +1,15 @@
-package com.example.task.dto.request;
+package com.example.task.dto.response;
 
 import com.example.task.entity.enums.Transaction;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record BalanceTransactionRequestDto (
+public record BalanceTransactionResponseDto(
+        UUID id,
         BigDecimal amount,
         String description,
         Transaction transaction,
-        UUID userId
-){
+        UserResponseDto user
+) {
 }

@@ -2,6 +2,7 @@ package com.example.task.controller;
 
 
 import com.example.task.dto.request.BalanceTransactionRequestDto;
+import com.example.task.dto.response.BalanceTransactionResponseDto;
 import com.example.task.entity.BalanceTransaction;
 import com.example.task.service.BalanceTransactionService;
 import jakarta.validation.Valid;
@@ -22,17 +23,17 @@ public class BalanceTransactionController {
     private  final BalanceTransactionService balanceTransactionService;
 
 
-    @GetMapping()
-    public ResponseEntity<List<BalanceTransaction>> getAll(){
-        List<BalanceTransaction> transactions = balanceTransactionService.getAll();
-        return ResponseEntity.ok(transactions);
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<BalanceTransaction> getById(@PathVariable UUID id){
-        BalanceTransaction balanceTransaction = balanceTransactionService.getTransactionById(id);
-        return ResponseEntity.ok(balanceTransaction);
-    }
+//    @GetMapping()
+//    public ResponseEntity<List<BalanceTransaction>> getAll(){
+//        List<BalanceTransaction> transactions = balanceTransactionService.getAll();
+//        return ResponseEntity.ok(transactions);
+//    }
+//
+//    @GetMapping("{id}")
+//    public ResponseEntity<BalanceTransaction> getById(@PathVariable UUID id){
+//        BalanceTransaction balanceTransaction = balanceTransactionService.getTransactionById(id);
+//        return ResponseEntity.ok(balanceTransaction);
+//    }
 
 //    @GetMapping()
 //    public ResponseEntity<List<BalanceTransaction>> getByDate(@RequestParam LocalDate date){
@@ -40,20 +41,17 @@ public class BalanceTransactionController {
 //        return ResponseEntity.ok(transactions);
 //    }
 
-    @GetMapping("/byUser")
-    public ResponseEntity<List<BalanceTransaction>> getByUser(@RequestParam UUID id){
-        List<BalanceTransaction> transactions = balanceTransactionService.getByUser(id);
-        return ResponseEntity.ok(transactions);
-    }
+//    @GetMapping("/byUser")
+//    public ResponseEntity<List<BalanceTransaction>> getByUser(@RequestParam UUID id){
+//        List<BalanceTransaction> transactions = balanceTransactionService.getByUser(id);
+//        return ResponseEntity.ok(transactions);
+//    }
 
 
-    @PostMapping("/{userId}addMoney")
-    public String addMoney(@PathVariable("userId")UUID id, @Valid @RequestBody BalanceTransactionRequestDto balanceTransactionRequestDto){
-        return balanceTransactionService.addMoney(id,balanceTransactionRequestDto);
+    @PostMapping("/{userId}createTransaction")
+    public ResponseEntity<BalanceTransactionResponseDto> createTransaction( @Valid @RequestBody BalanceTransactionRequestDto balanceTransactionRequestDto){
+        BalanceTransactionResponseDto balanceTransactionResponseDto = balanceTransactionService.createTransaction(balanceTransactionRequestDto);
+        return ResponseEntity.ok(balanceTransactionResponseDto);
     }
 
-    @PostMapping("/{userId}subtractMoney")
-    public String subtractMoney(@PathVariable("userId")UUID id, @Valid @RequestBody BalanceTransactionRequestDto balanceTransactionRequestDto){
-        return balanceTransactionService.subtractionMoney(id, balanceTransactionRequestDto);
-    }
 }

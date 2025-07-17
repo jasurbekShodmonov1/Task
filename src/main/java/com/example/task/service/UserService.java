@@ -38,16 +38,16 @@ public class UserService {
         return userMapper.toDto(saved);
     }
 
-    public String  addMoney(UUID id, Double amount){
-
-        User user = userRepository.findById(id)
-                        .orElseThrow(()->new RuntimeException("User not found"));
-        user.setBalance(user.getBalance()+amount);
-        userRepository.save(user);
-
-        return "Money added successfully";
-
-    }
+//    public String  addMoney(UUID id, Double amount){
+//
+//        User user = userRepository.findById(id)
+//                        .orElseThrow(()->new RuntimeException("User not found"));
+//        user.setBalance(user.getBalance()+amount);
+//        userRepository.save(user);
+//
+//        return "Money added successfully";
+//
+//    }
 
 
 

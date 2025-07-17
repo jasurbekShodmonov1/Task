@@ -26,7 +26,9 @@ public class User extends BaseDomain<UUID> implements UserDetails {
 
     private String fullName;
 
-    private Double balance;
+    @Column(precision = 19, scale = 2)
+    private BigDecimal balance;
+
     @Column(unique = true)
     private String username;
 
@@ -36,6 +38,7 @@ public class User extends BaseDomain<UUID> implements UserDetails {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
 
 
 
