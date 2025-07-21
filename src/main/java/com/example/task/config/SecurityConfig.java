@@ -43,8 +43,8 @@ public class SecurityConfig {
     private final ApplicationProperties applicationProperties;
     private static final String[] PUBLIC_URLS = {
             "/api/auth/v1/login",
-            "/api/users/v1/**",
-            "/api/balanceTransaction/v1/**",
+            "/api/users/v1",
+
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
@@ -56,7 +56,7 @@ public class SecurityConfig {
             "/webjars/**",
             "/swagger-ui.html"
     };
-    private static final String[] COMMON_URLS = {};
+    private static final String[] COMMON_URLS = {"/api/balanceTransaction/v1**","/api/users/v1/{userId}"};
     private static final String[] ADMIN_URLS = {};
 
     private static final String[] MANAGER_URLS = {};
@@ -80,6 +80,7 @@ public class SecurityConfig {
                         auth ->
                                 auth.requestMatchers(PUBLIC_URLS)
                                         .permitAll()
+                                        .requestMatchers(COMMON_URLS).authenticated()
                                         .anyRequest()
                                         .authenticated())
                 .exceptionHandling(

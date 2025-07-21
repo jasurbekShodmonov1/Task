@@ -8,7 +8,8 @@ import java.util.UUID;
 public record BalanceTransactionRequestDto (
         BigDecimal amount,
         String description,
-        Transaction transaction,
-        UUID userId
+
+        UUID senderUserId,
+        UUID receiverUserId
 ){
 }

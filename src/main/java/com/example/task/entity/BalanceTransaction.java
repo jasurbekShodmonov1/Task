@@ -22,12 +22,16 @@ public class BalanceTransaction  extends BaseDomain<UUID> {
 
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private Transaction transaction;
+
 
     @CreationTimestamp
     private LocalDate timestamp;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
+    @ManyToOne
+    private User senderUser;
+
+    @ManyToOne
+    private User receiverUser;
+
+
 }

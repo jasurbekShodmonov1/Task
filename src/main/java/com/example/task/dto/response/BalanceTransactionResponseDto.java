@@ -9,7 +9,8 @@ public record BalanceTransactionResponseDto(
         UUID id,
         BigDecimal amount,
         String description,
-        Transaction transaction,
-        UserResponseDto user
+
+        UserResponseDto senderUser,
+        UserResponseDto receiverUser
 ) {
 }

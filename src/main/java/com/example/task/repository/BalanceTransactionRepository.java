@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BalanceTransactionRepository extends JpaRepository<BalanceTransaction, UUID> {
-    List<BalanceTransaction> findByUser(User user);
+    List<BalanceTransaction> findBySenderUser(User user);
+    List<BalanceTransaction> findByReceiverUser(User user);
     List<BalanceTransaction> findByTimestampBetween(LocalDate startDate, LocalDate endDate);
 
 //        List<BalanceTransaction> findAllByTimestamp(LocalDate date);

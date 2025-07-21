@@ -4,8 +4,7 @@ package com.example.task.mapper;
 import com.example.task.dto.request.BalanceTransactionRequestDto;
 import com.example.task.dto.response.BalanceTransactionResponseDto;
 import com.example.task.entity.BalanceTransaction;
-import com.example.task.entity.User;
-import org.mapstruct.Context;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
