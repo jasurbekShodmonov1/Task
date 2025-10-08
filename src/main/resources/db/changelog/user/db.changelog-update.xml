@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="jasurbek">
+
+        <preConditions onFail="MARK_RAN">
+            <dbms type="postgresql"/>
+        </preConditions>
+
+        <sql dbms="postgresql">
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        </sql>
+
+
+        <update tableName="users">
+            <column name="password" value="$2a$10$njE6OSxnstA9.rpVMx7blepCFJvK83tIFdImrXibRuNu5SEVwwSGu"/>
+            <where>username='sardor'</where>
+
+
+
+        </update>
+
+
+
+    </changeSet>
+</databaseChangeLog>

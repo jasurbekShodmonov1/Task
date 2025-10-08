@@ -33,6 +33,8 @@ dependencies {
 	implementation ("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.security:spring-security-oauth2-jose:6.4.4")
+	implementation ("org.liquibase:liquibase-core")
+
 	implementation("com.nimbusds:nimbus-jose-jwt:9.40")
 	implementation ("org.immutables:builder:2.10.0")
 	annotationProcessor ("org.immutables:builder:2.10.0")
@@ -40,7 +42,8 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 
