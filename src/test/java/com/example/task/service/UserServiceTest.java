@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -102,5 +103,35 @@ public class UserServiceTest {
         verify(userMapper).toDto(savedUser);
     }
 
+    @Test
+    void deleteUserShouldReturnTrueWhenUserExists(){
+        UUID userId = UUID.randomUUID();
+        User mockUser = mock(User.class);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+
+        boolean result = userService.deleteUser(userId);
+
+        assertTrue(result);
+
+        verify(userRepository).findById(userId);
+        verify(userRepository).delete(mockUser);
+    }
+
+    @Test
+    void deleteUserShouldThrowExceptionWhenUserNotFound(){
+        UUID userId= UUID.randomUUID();
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                ()-> userService.deleteUser(userId)
+        );
+
+        assertEquals("User not found", exception.getMessage());
+
+        verify(userRepository, never()).delete(any());
+    }
 
 }
