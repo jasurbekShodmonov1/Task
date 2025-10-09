@@ -1,6 +1,7 @@
 package com.example.task.service;
 
 
+import com.example.task.dto.request.BalanceTransactionRequestDto;
 import com.example.task.dto.response.BalanceTransactionResponseDto;
 import com.example.task.dto.response.UserResponseDto;
 import com.example.task.entity.BalanceTransaction;
@@ -212,6 +213,76 @@ public class BalanceTransactionServiceTest {
         assertTrue(result.isEmpty());
         verifyNoInteractions(balanceTransactionRepository);
         verifyNoInteractions(balanceTransactionMapper);
+    }
+
+    @Test
+    void createTransaction_ShouldSucceed_WhenBalanceIsEnough() {
+
+        BalanceTransactionRequestDto request = new BalanceTransactionRequestDto(
+                new BigDecimal("100.00"),
+                "Transfer",
+                UUID.randomUUID(),
+                UUID.randomUUID()
+        );
+
+
+        User sender = new User();
+        sender.setBalance(new BigDecimal("200.00"));
+
+        User receiver = new User();
+        receiver.setBalance(new BigDecimal("50.00"));
+
+
+        BalanceTransaction transaction = new BalanceTransaction();
+        when(balanceTransactionMapper.toEntity(any(BalanceTransactionRequestDto.class))).thenReturn(transaction);
+
+        when(userRepository.findById(request.senderUserId())).thenReturn(Optional.of(sender));
+        when(userRepository.findById(request.receiverUserId())).thenReturn(Optional.of(receiver));
+        when(balanceTransactionRepository.save(any(BalanceTransaction.class))).thenReturn(transaction);
+        when(balanceTransactionMapper.toDto(transaction))
+                .thenReturn(new BalanceTransactionResponseDto(UUID.randomUUID(), new BigDecimal("100.00"),
+                        "Transfer", null, null));
+
+
+        BalanceTransactionResponseDto result = balanceTransactionService.createTransaction(request);
+
+
+        assertNotNull(result);
+        verify(userRepository, times(1)).save(sender);
+        verify(balanceTransactionRepository, times(1)).save(transaction);
+    }
+
+    @Test
+    void createTransaction_ShouldThrowException_WhenBalanceIsNotEnough(){
+        BalanceTransactionRequestDto request =  new BalanceTransactionRequestDto(
+                new BigDecimal("1000.00"),
+                "Transfer",
+                UUID.randomUUID(),
+                UUID.randomUUID()
+        );
+
+        User sender = new User();
+        sender.setBalance(new BigDecimal("100.00"));
+
+        User receiver = new User();
+        receiver.setBalance(new BigDecimal("50.00"));
+
+        BalanceTransaction transaction =  new BalanceTransaction();
+        when(balanceTransactionMapper.toEntity(any(BalanceTransactionRequestDto.class)))
+                .thenReturn(transaction);
+
+        when(userRepository.findById(request.senderUserId())).thenReturn(Optional.of(sender));
+        when(userRepository.findById(request.receiverUserId())).thenReturn(Optional.of(receiver));
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                ()->balanceTransactionService.createTransaction(request)
+        );
+
+        assertEquals("Fault", exception.getMessage());
+
+        verify(userRepository, never()).save(any(User.class));
+        verify(balanceTransactionRepository, never()).save(any(BalanceTransaction.class));
     }
 
 }
