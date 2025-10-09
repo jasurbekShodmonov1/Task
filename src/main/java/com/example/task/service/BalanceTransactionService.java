@@ -51,6 +51,7 @@ public class BalanceTransactionService {
         List<BalanceTransaction> transactions = balanceTransactionRepository.findBySenderUser(user);
         return transactions.stream().map(balanceTransactionMapper::toDto).toList();
     }
+
     public List<BalanceTransactionResponseDto> getByDate(LocalDate date){
         LocalDate today =LocalDate.now();
         if(date.isBefore(today)){
